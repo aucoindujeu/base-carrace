@@ -88,8 +88,6 @@ function love.update(dt)
 
     majEnnemis(dt)
   
-    majTirs(dt)
-
   end
 
 end

@@ -2,3 +2,6 @@
 *.swp
 *.swo
 <
+
+# répertoire dist/ utilisé par love.js
+dist/
