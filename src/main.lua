@@ -1,7 +1,3 @@
---
--- TO DO
---  o trouver une solution au pb vy = 0 a v.y_max
---
 -- **********************************
 -- Variables utilisées dans le jeu
 -- *********************************
@@ -9,7 +5,7 @@
 -- Constantes
 LARGEUR_ECRAN = 400
 HAUTEUR_ECRAN = 600
-VY_MAX = 800
+VY_MAX = 10
 DELAI = 3
 
 etatJeu = 'menu'
@@ -88,11 +84,11 @@ function majJoueureuse(dt)
 
   if joueureuse.touche == false then
     if love.keyboard.isDown('left') then
-      joueureuse.x = joueureuse.x - (joueureuse.vx + joueureuse.vy) * dt
+      joueureuse.x = joueureuse.x - (joueureuse.vx + 10 * math.abs(joueureuse.vy)) * dt
     end
 
     if love.keyboard.isDown('right') then
-      joueureuse.x = joueureuse.x + (joueureuse.vx + joueureuse.vy) * dt
+      joueureuse.x = joueureuse.x + (joueureuse.vx + 10 * math.abs(joueureuse.vy)) * dt
     end
 
     if joueureuse.x < 100 or joueureuse.x + joueureuse.l > 300 then
@@ -108,7 +104,7 @@ function majJoueureuse(dt)
         end
       else
         if joueureuse.y < joueureuse.y_ini then
-          joueureuse.vy = joueureuse.vy - 2 * joueureuse.acceleration * dt
+          joueureuse.vy = joueureuse.vy - joueureuse.acceleration * dt
         end
       end
     
@@ -122,7 +118,6 @@ function majJoueureuse(dt)
 
     if joueureuse.y < joueureuse.y_max then
       joueureuse.y = joueureuse.y_max
-      joueureuse.vy = 0
     end
 
   else 
@@ -223,7 +218,7 @@ function love.draw()
     love.graphics.print('vy = '..tostring(joueureuse.vy), 10, 30)
     love.graphics.print('y_ini = '..tostring(joueureuse.y_ini), 10, 50)
     love.graphics.print('y_max = '..tostring(joueureuse.y_max), 10, 70)
-    love.graphics.print('vx = '..tostring(joueureuse.vx), 10, 90)
+    love.graphics.print('vx = '..tostring(joueureuse.vx + 10 * math.abs(joueureuse.vy)), 10, 90)
 
   elseif etatJeu == 'game over' then
 
