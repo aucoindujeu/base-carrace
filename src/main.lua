@@ -3,7 +3,7 @@
 -- *********************************
 
 -- Constantes
-LARGEUR_ECRAN = 800
+LARGEUR_ECRAN = 400
 HAUTEUR_ECRAN = 600
 
 etatJeu = 'menu'
@@ -96,13 +96,16 @@ end
 -- AFFICHAGE
 -- ***************
 
+function texteCentre(pTexte, pHauteur)
+
+  love.graphics.printf(pTexte, 0, pHauteur, LARGEUR_ECRAN, 'center')
+
+end
+
+
 function afficheMenu()
 
-  love.graphics.printf('appuyer sur `espace` pour lancer le jeu',
-                        0,
-                        HAUTEUR_ECRAN/2,
-                        LARGEUR_ECRAN,
-                        'center')
+  texteCentre('appuyer sur `espace` pour lancer le jeu', HAUTEUR_ECRAN/2)
 
 end
 
@@ -119,6 +122,8 @@ end
 
 
 function afficheGameOver()
+
+  texteCentre('Game over', HAUTEUR_ECRAN/2)
 
 end
 
