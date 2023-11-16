@@ -8,6 +8,8 @@ HAUTEUR_ECRAN = 600
 
 etatJeu = 'menu'
 
+imgFond = love.graphics.newImage('images/fond.png')
+
 -- Sprite Joueur
 joueureuse = {}
 joueureuse.img = love.graphics.newImage('images/joueureuse.png')
@@ -16,6 +18,9 @@ joueureuse.l = joueureuse.img:getWidth()
 joueureuse.h = joueureuse.img:getHeight()
 joueureuse.x = 0 
 joueureuse.y = 0 
+joueureuse.vy = 500
+joueureuse.vx = 300
+joueureuse.touche = false
 
 -- Sprites Ennemis
 
@@ -69,6 +74,20 @@ end
 
 function majJoueureuse(dt)
 
+  if joueureuse.touche == false then
+    if love.keyboard.isDown('left') then
+      joueureuse.x = joueureuse.x - joueureuse.vx * dt
+    end
+
+    if love.keyboard.isDown('right') then
+      joueureuse.x = joueureuse.x + joueureuse.vx * dt
+    end
+
+    if joueureuse.x < 100 or joueureuse.x + joueureuse.l > 300 then
+      joueureuse.touche = true
+    end
+  end
+
 end
 
 
@@ -112,7 +131,15 @@ end
 
 function afficheJoueur()
 
-  love.graphics.draw(joueureuse.img, joueureuse.x, joueureuse.y)
+  local img = nil
+
+  if joueureuse.touche == false then
+    img = joueureuse.img
+  else
+    img = joueureuse.imgExplosion
+  end
+
+  love.graphics.draw(img, joueureuse.x, joueureuse.y)
 
 end
 
@@ -136,6 +163,7 @@ function love.draw()
 
   elseif etatJeu == 'en jeu' then
 
+    love.graphics.draw(imgFond, 0, 0)
     afficheJoueur()
     afficheEnnemis()
 
