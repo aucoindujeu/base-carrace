@@ -4,7 +4,7 @@ Bases d’un jeu de course. L’objectif est de distancer un maximum de voitures
 
 ![Capture d’écran](./src/images/Capture.png)
 
-Vous pouvez tester le jeu [ici](https://aucoinsdujeu.github.io/base-carrace).
+Vous pouvez tester le jeu [ici](https://aucoindujeu.github.io/base-carrace).
 
 À améliorer (graphismes, sons, etc.) ou à simplement  modifier sans vergogne. 
 
@@ -12,6 +12,7 @@ Pistes :
 - améliorer les graphismes en créant vos propres images de bolides, de bordures, de route…
 - améliorer les sons
 - améliorer les écrans titre, menu, game-over…
+- modifier le système de collision pour rendre le jeu plus facile
 - créer différents types de voitures avec des caractéristiques (vitesse max, maniabilité…) différentes
 - créer une voiture avec une jauge de vie afin que le jeu ne s’arrête pas au premier impact
 - créer un système de bonus à ramasser
