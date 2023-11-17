@@ -13,6 +13,7 @@ Pistes :
 - améliorer les sons
 - améliorer les écrans titre, menu, game-over…
 - modifier le système de collision pour rendre le jeu plus facile
+- on constate que les voitures concurrentes peuvent se chevaucher, se rentrer dedans… c’est injuste ! étendre le système de collision aux autres voitures
 - créer différents types de voitures avec des caractéristiques (vitesse max, maniabilité…) différentes
 - créer une voiture avec une jauge de vie afin que le jeu ne s’arrête pas au premier impact
 - créer un système de bonus à ramasser

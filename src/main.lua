@@ -119,6 +119,7 @@ function majJoueureuse(dt)
 
   joueureuse.chrono = joueureuse.chrono - dt
   if joueureuse.chrono <= 0 then
+    joueureuse.score = joueureuse.score + 20
     etatJeu = "game over"
   end
 
@@ -282,7 +283,12 @@ end
 
 function afficheGameOver()
 
-  texteCentre('Game over', HAUTEUR_ECRAN/2 - 40)
+  if joueureuse.touche == true then
+    texteCentre('Game over', HAUTEUR_ECRAN/2 - 40)
+  elseif joueureuse.chrono <= 0 then
+    texteCentre('Bravo ! Bonus de 20 points', HAUTEUR_ECRAN/2 - 40)
+  end
+
   texteCentre('Votre score est de '..tostring(joueureuse.score), HAUTEUR_ECRAN/2)
   texteCentre('Appuyer sur entrée pour revenir au menu', HAUTEUR_ECRAN/2 + 40)
 
