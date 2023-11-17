@@ -6,6 +6,7 @@
 LARGEUR_ECRAN = 400
 HAUTEUR_ECRAN = 600
 VY_MAX = 8
+FREQ_ENNEMIS = 30
 DELAI = 3
 
 etatJeu = 'menu'
@@ -26,9 +27,11 @@ joueureuse.vy = 0
 joueureuse.acceleration = 5
 joueureuse.touche = false
 joueureuse.delai = DELAI
+joueureuse.touche = false
 
 -- Sprites Ennemis
 lstEnnemis = {}
+chronoEnnemis = FREQ_ENNEMIS 
 
 -- Scrolling
 scrolling = {}
@@ -48,6 +51,25 @@ function testeCollision(pX1, pY1, pL1, pH1, pX2, pY2, pL2, pH2)
   return pX1 < pX2 + pL2 and pX2 < pX1 + pL1 and pY1 < pY2 + pH2 and pY2 < pY1 + pH1
 
 end
+
+function creerEnnemi()
+
+  local ennemi = {}
+  ennemi.x = pX
+  ennemi.vy = math.random(50, 300) 
+  ennemi.img = love.graphics.newImage('images/ennemi.png')
+  ennemi.imgExplosion = love.graphics.newImage('images/explosion.png')
+  ennemi.l = ennemi.img:getWidth()
+  ennemi.h = ennemi.img:getHeight()
+  ennemi.y = 0 - ennemi.h
+  ennemi.touche = false
+
+  ennemi.x = math.random(100, 300 - ennemi.l)
+
+  return ennemi
+
+end
+
 
 -- ****************************
 -- INITIALISATION DE LA PARTIE
@@ -137,7 +159,39 @@ function majJoueureuse(dt)
 end
 
 
-function majEnnemis(dt)
+function majEnnemis(dt, pVit)
+
+  chronoEnnemis = chronoEnnemis - pVit * dt
+  if chronoEnnemis < 0 then
+    chronoEnnemis = FREQ_ENNEMIS - math.random(15)
+    table.insert(lstEnnemis, creerEnnemi())
+  end
+  
+  for n = #lstEnnemis, 1, -1 do
+
+    local ennemi = lstEnnemis[n]
+    if ennemi.touche == false then
+
+      ennemi.y = ennemi.y - ennemi.vy * dt + pVit /2
+      if ennemi.y > HAUTEUR_ECRAN then
+        table.remove(lstEnnemis, n)
+      end
+
+      if testeCollision(ennemi.x, 
+                        ennemi.y, 
+                        ennemi.l, 
+                        ennemi.h, 
+                        joueureuse.x,
+                        joueureuse.y,
+                        joueureuse.l,
+                        joueureuse.h) then
+        joueureuse.touche = true
+        ennemi.touche = true
+      end
+    end
+
+  end
+
 end
 
 
@@ -157,7 +211,7 @@ function love.update(dt)
 
     majJoueureuse(dt) 
 
-    majEnnemis(dt)
+    majEnnemis(dt, scrl)
   
   end
 
@@ -197,6 +251,18 @@ end
 
 
 function afficheEnnemis()
+
+  for n = #lstEnnemis, 1, -1 do
+    ennemi = lstEnnemis[n]
+    local img = nil
+    if ennemi.touche == false then
+      img = ennemi.img
+    else
+      img = ennemi.imgExplosion
+    end
+    love.graphics.draw(img, ennemi.x, ennemi.y)
+  end
+
 end
 
 
