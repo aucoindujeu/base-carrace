@@ -8,6 +8,7 @@ HAUTEUR_ECRAN = 600
 VY_MAX = 8
 FREQ_ENNEMIS = 30
 DELAI = 3
+CHRONO = 60
 
 etatJeu = 'menu'
 
@@ -27,6 +28,7 @@ joueureuse.vy = 0
 joueureuse.acceleration = 5
 joueureuse.touche = false
 joueureuse.delai = DELAI
+joueureuse.chrono = CHRONO
 joueureuse.touche = false
 joueureuse.score = 0
 
@@ -84,6 +86,8 @@ function initJeu()
   joueureuse.vy = 0 
   joueureuse.score = 0
   joueureuse.delai = DELAI
+  joueureuse.chrono = CHRONO 
+
   lstEnnemis = {}
 
 end
@@ -112,6 +116,11 @@ end
 
 
 function majJoueureuse(dt)
+
+  joueureuse.chrono = joueureuse.chrono - dt
+  if joueureuse.chrono <= 0 then
+    etatJeu = "game over"
+  end
 
   if joueureuse.touche == false then
     if love.keyboard.isDown('left') then
@@ -179,6 +188,7 @@ function majEnnemis(dt, pVit)
       ennemi.y = ennemi.y - ennemi.vy * dt + pVit /2
       if ennemi.y > HAUTEUR_ECRAN then
         table.remove(lstEnnemis, n)
+        joueureuse.score = joueureuse.score + 1
       end
 
       if testeCollision(ennemi.x, 
@@ -273,6 +283,7 @@ end
 function afficheGameOver()
 
   texteCentre('Game over', HAUTEUR_ECRAN/2 - 40)
+  texteCentre('Votre score est de '..tostring(joueureuse.score), HAUTEUR_ECRAN/2)
   texteCentre('Appuyer sur entrée pour revenir au menu', HAUTEUR_ECRAN/2 + 40)
 
 end
@@ -294,16 +305,9 @@ function love.draw()
     afficheJoueur()
     afficheEnnemis()
 
-    --********************
-    --///////////////////
-    --DEBUG INFO
-    --//////////////////
-    --********************
-    love.graphics.print('y = '..tostring(joueureuse.y), 10, 10)
-    love.graphics.print('vy = '..tostring(joueureuse.vy), 10, 30)
-    love.graphics.print('vx = '..tostring(joueureuse.vx + 10 * math.abs(joueureuse.vy)), 10, 50)
-    love.graphics.print('camera = '..tostring(scrolling.camera), 10, 70)
-    love.graphics.print('scrl = '..tostring(scrl), 10, 90)
+    --score et chrono
+    love.graphics.print('Temps : '..tostring(math.ceil(joueureuse.chrono)), 10, 10)
+    love.graphics.print('Score : '..tostring(joueureuse.score), 10, 30)
 
   elseif etatJeu == 'game over' then
 
