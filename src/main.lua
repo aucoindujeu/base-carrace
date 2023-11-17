@@ -5,12 +5,11 @@
 -- Constantes
 LARGEUR_ECRAN = 400
 HAUTEUR_ECRAN = 600
-VY_MAX = 10
+VY_MAX = 8
 DELAI = 3
 
 etatJeu = 'menu'
 
-imgFond = love.graphics.newImage('images/fond.png')
 
 -- Sprite Joueur
 joueureuse = {}
@@ -29,9 +28,15 @@ joueureuse.touche = false
 joueureuse.delai = DELAI
 
 -- Sprites Ennemis
-
 lstEnnemis = {}
 
+-- Scrolling
+scrolling = {}
+scrolling.camera = 0
+scrolling.imgFond = love.graphics.newImage('images/fond.png')
+scrolling.imgBandes = love.graphics.newImage('images/bandes.png')
+scrolling.xBandes = (scrolling.imgFond:getWidth() - scrolling.imgBandes:getWidth()) / 2
+scrolling.h = scrolling.imgBandes:getHeight()
 
 -- *****************
 -- Fonctions
@@ -144,6 +149,12 @@ function love.update(dt)
 
   elseif etatJeu == 'en jeu' then
 
+    scrl = ((600 - joueureuse.y)^2/200 + 600) * dt
+    scrolling.camera = scrolling.camera + scrl
+    if scrolling.camera >= scrolling.h then
+      scrolling.camera = 0
+    end
+
     majJoueureuse(dt) 
 
     majEnnemis(dt)
@@ -205,7 +216,11 @@ function love.draw()
 
   elseif etatJeu == 'en jeu' then
 
-    love.graphics.draw(imgFond, 0, 0)
+    -- affichage fond/scrolling
+    love.graphics.draw(scrolling.imgFond, 0, 0)
+    love.graphics.draw(scrolling.imgBandes, scrolling.xBandes, scrolling.camera - scrolling.h)
+    love.graphics.draw(scrolling.imgBandes, scrolling.xBandes, scrolling.camera)
+
     afficheJoueur()
     afficheEnnemis()
 
@@ -216,9 +231,9 @@ function love.draw()
     --********************
     love.graphics.print('y = '..tostring(joueureuse.y), 10, 10)
     love.graphics.print('vy = '..tostring(joueureuse.vy), 10, 30)
-    love.graphics.print('y_ini = '..tostring(joueureuse.y_ini), 10, 50)
-    love.graphics.print('y_max = '..tostring(joueureuse.y_max), 10, 70)
-    love.graphics.print('vx = '..tostring(joueureuse.vx + 10 * math.abs(joueureuse.vy)), 10, 90)
+    love.graphics.print('vx = '..tostring(joueureuse.vx + 10 * math.abs(joueureuse.vy)), 10, 50)
+    love.graphics.print('camera = '..tostring(scrolling.camera), 10, 70)
+    love.graphics.print('scrl = '..tostring(scrl), 10, 90)
 
   elseif etatJeu == 'game over' then
 
