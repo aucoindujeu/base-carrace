@@ -28,6 +28,7 @@ joueureuse.acceleration = 5
 joueureuse.touche = false
 joueureuse.delai = DELAI
 joueureuse.touche = false
+joueureuse.score = 0
 
 -- Sprites Ennemis
 lstEnnemis = {}
@@ -81,6 +82,9 @@ function initJeu()
   joueureuse.y = joueureuse.y_ini
   joueureuse.touche = false
   joueureuse.vy = 0 
+  joueureuse.score = 0
+  joueureuse.delai = DELAI
+  lstEnnemis = {}
 
 end
 
